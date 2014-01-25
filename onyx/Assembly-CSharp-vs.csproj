@@ -44,7 +44,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Actors\Building.cs" />
      <Compile Include="Assets\Actors\Pawn.cs" />
+     <Compile Include="Assets\Actors\PawnController.cs" />
      <Compile Include="Assets\GUI\MenuGUI.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipItems.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipRandomItem.cs" />
