@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BGMController : MonoBehaviour {
 	
+	public string startBGM = "bgm_normal";
+	
 	AudioSource[] audios;
 	
 	private int currentIndex;
@@ -24,7 +26,7 @@ public class BGMController : MonoBehaviour {
 		}
 		
 		// start song
-		currentIndex = getIndex ("bgm_normal");
+		currentIndex = getIndex (startBGM);
 		
 		// no transition now
 		nextIndex = -1;
