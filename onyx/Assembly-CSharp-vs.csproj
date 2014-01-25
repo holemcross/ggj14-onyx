@@ -46,6 +46,11 @@
   <ItemGroup>
      <Compile Include="Assets\Actors\Pawn.cs" />
      <Compile Include="Assets\GUI\MenuGUI.cs" />
+     <Compile Include="Assets\HUD\CameraFollowable.cs" />
+     <Compile Include="Assets\HUD\PlayerCamera.cs" />
+     <Compile Include="Assets\HUD\PlayerCameraPanner.cs" />
+     <Compile Include="Assets\HUD\TestCameraFollowScript.cs" />
+     <Compile Include="Assets\HUD\TestCameraLockOn.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipItems.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipRandomItem.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\UICursor.cs" />
