@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using SimpleJSON;
 
 public class PlayerInput : MonoBehaviour {
 	
@@ -10,7 +11,8 @@ public class PlayerInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// DEBUG
-		setOwner(1); // TEMP FOR NOW
+		if(PhotonNetwork.isMasterClient) setOwner(1);
+		else setOwner(2);
 	}
 
 	// Update is called once per frame
@@ -19,6 +21,13 @@ public class PlayerInput : MonoBehaviour {
 		{
 			HandleScreenClick(mainCamera);
 		}
+	}
+	
+	[RPC]
+	void PlayerInput_RemoteHandleScreenClick(Vector3 point,int ownership) {
+		JSONClass cl = (JSONClass) JSONNode.LoadFromBase64(data);
+		int nx = cl["pointx"].AsFloat;
+		HandleScreenClickMerge(nx,ownership);
 	}
 	
 	void HandleScreenClick( Camera cam )
@@ -35,7 +44,19 @@ public class PlayerInput : MonoBehaviour {
 		}
 		
 		Debug.Log(hit.point);
-		pawnController.SetWayPoint(new Vector3(hit.point.x,0,0), ownership);
+		
+		if(PhotonNetwork.isMasterClient) HandleScreenClickMerge(hit.point.x,ownership);
+		else {
+			JSONClass cl = new JSONClass();
+			JSONData px = new JSONData(hit.point.x);
+			cl.Add("pointx",px);
+			string data = cl.SaveToBase64();
+			pview.RPC("GameResources_DoSyncGet",PhotonTargets.Others,data);
+		}
+	}
+	
+	void HandleScreenClickMerge(float pointx, int owner) {
+		pawnController.SetWayPoint(new Vector3(pointx,0,0), owner);
 	}
 	
 	void setOwner( int ownerValue)
