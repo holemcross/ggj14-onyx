@@ -22,7 +22,7 @@ public class HudController : MonoBehaviour {
 		int pop_them = resource.pop_p2;
 		int mana = resource.p1_mana;
 		
-		if(Network.isClient) {
+		if(PhotonNetwork.isMasterClient) {
 			pop_our = resource.pop_p2;
 			pop_them = resource.pop_p1;
 			mana = resource.p2_mana;

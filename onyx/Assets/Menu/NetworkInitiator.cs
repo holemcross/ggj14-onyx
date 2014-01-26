@@ -24,10 +24,15 @@ public class NetworkInitiator : MonoBehaviour {
 	LANBroadcastService lanbs;
 	
 	private string quickip;
+	private int pcount = 0;
 	
 	// Use this for initialization
 	void Start () {
-		lanbs = transform.GetComponent<LANBroadcastService>();
+		
+		PhotonNetwork.ConnectUsingSettings("1.0");
+		Debug.Log ((PhotonNetwork.connectionStateDetailed.ToString()));
+		
+		//lanbs = transform.GetComponent<LANBroadcastService>();
 		state = MState.IDLE;
 		quickip = "";
 		
@@ -48,7 +53,7 @@ public class NetworkInitiator : MonoBehaviour {
 	void Update () {
 		if(state==MState.IDLE) {
 			state = MState.SEARCHING;
-			lanbs.StartSearchBroadCasting(OnFoundServer,OnNotFoundServer);
+			//lanbs.StartSearchBroadCasting(OnFoundServer,OnNotFoundServer);
 		}
 	}
 	
@@ -66,6 +71,9 @@ public class NetworkInitiator : MonoBehaviour {
 		state = MState.CONNECTING;
 		StatusLabel.text = "CONNECTING TO "+ip;
 		
+		PhotonNetwork.JoinRoom(ip);
+		
+		/*
 		// Validate IP
 		try
 		{
@@ -84,7 +92,7 @@ public class NetworkInitiator : MonoBehaviour {
 		{
 			StatusLabel.text = "Failed to Connect to Server";
 			state = MState.IDLE;
-		}
+		}*/
 		
 	}
 			
@@ -92,18 +100,47 @@ public class NetworkInitiator : MonoBehaviour {
 	public void StartStopServer() {
 		
 		if(state==MState.LISTENING) {
-			lanbs.StopBroadCasting();
+			//lanbs.StopBroadCasting();
+			PhotonNetwork.LeaveRoom();
 			StatusLabel.text = "Server stopped";
 			StartStopServerLabel.text = "Start Server";
 			state = MState.IDLE;
 		} else {
-			Network.InitializeServer(2,DEFAULT_PORT,true);
-			lanbs.StartAnnounceBroadCasting();
-			StatusLabel.text = "Waiting for connection";
+			string svname = "server"+Random.Range(10000,100000);
+			PhotonNetwork.CreateRoom(svname,false,true,2);
+			pcount = 0;
+			//Network.InitializeServer(2,DEFAULT_PORT,true);
+			//lanbs.StartAnnounceBroadCasting();
+			StatusLabel.text = "Waiting for connection with name "+svname;
 			StartStopServerLabel.text = "Stop Server";
 			state = MState.LISTENING;
 		}
 		
+	}
+	
+	void OnPhotonPlayerConnected(PhotonPlayer otherPlayer) {
+		Debug.Log ("client join");
+		if(PhotonNetwork.isMasterClient) {
+			StatusLabel.text = "Client connected";
+			state = MState.STARTING;
+			Application.LoadLevel("Scene_TestCameraHUD");
+		}
+	}
+	
+	void OnJoinedRoom() {
+		Debug.Log ("someone join");
+		if(!PhotonNetwork.isMasterClient) {
+			Debug.Log ("it's the client");
+			// we are the client
+			StatusLabel.text = "Connected";
+			state = MState.STARTING;
+			Application.LoadLevel("Scene_TestCameraHUD");
+		}
+	}
+	
+	void OnPhotonJoinRoomFailed() {
+		StatusLabel.text = "Error connecting to Server";
+		state = MState.IDLE;
 	}
 	
 	void OnPlayerConnected(NetworkPlayer player) {

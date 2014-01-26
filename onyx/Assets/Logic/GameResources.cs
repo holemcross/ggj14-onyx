@@ -16,15 +16,17 @@ public class GameResources : MonoBehaviour {
 	
 	private float resForAll = 0f;
 	
-	private NetworkView nview;
+	private PhotonView pview;
+	//private NetworkView nview;
 	
 	// Use this for initialization
 	void Start () {
-       
-		nview = gameObject.GetComponent<NetworkView>();
-		//nview.viewID = Network.AllocateViewID();
 		
-		if (Network.isServer)
+		//nview = gameObject.GetComponent<NetworkView>();
+		//nview.viewID = Network.AllocateViewID();
+		pview = gameObject.GetComponent<PhotonView>();
+		
+		if (PhotonNetwork.isMasterClient)
         {
             DoSync();
         }
@@ -34,7 +36,7 @@ public class GameResources : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if(!Network.isClient) {
+		if(PhotonNetwork.isMasterClient || PhotonNetwork.room==null) {
 			resForAll += Time.fixedDeltaTime;
 			if(resForAll>5f) {
 				resForAll -= 5f;
@@ -43,7 +45,7 @@ public class GameResources : MonoBehaviour {
 			}
 		}
 		
-        if (Network.isServer)
+        if (PhotonNetwork.isMasterClient)
         {
             	
 			// we are server, broadcast update every 1/30 s
@@ -74,7 +76,8 @@ public class GameResources : MonoBehaviour {
 		
 		string data = cl.SaveToBase64();
 		
-        nview.RPC("GameResources_DoSyncGet", RPCMode.Others, data);
+		pview.RPC("GameResources_DoSyncGet",PhotonTargets.Others,data);
+        //nview.RPC("GameResources_DoSyncGet", RPCMode.Others, data);
 		Debug.Log ("sending data to client");
     }
 
