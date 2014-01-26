@@ -19,7 +19,7 @@ public class PawnController : MonoBehaviour {
 		{
 			GameObject myPawn = (GameObject)Instantiate(Resources.Load("NPC_Pawn", typeof(GameObject)));
 			
-			myPawn.GetComponent<Pawn>().setPawn(new Vector3(1 *i,0,0), 1);
+			myPawn.GetComponent<Pawn>().setPawn(new Vector3(3 *i,0,0), 1);
 			pawnObjList.Add(myPawn);
 		}
 	}
@@ -54,12 +54,12 @@ public class PawnController : MonoBehaviour {
 		// if goal set
 		else if( CalcWayPoint( targetPawn ) )
 		{
-			//Debug.Log("CalcWayPoint Triggered");
+			Debug.Log("CalcWayPoint Triggered");
 			pawn.pawnState = Pawn.PawnState.march;
 		}
 		else
 		{
-			//Debug.Log("CalcIdle Triggered");
+			Debug.Log("CalcIdle Triggered");
 			pawn.pawnState = Pawn.PawnState.idle;
 		}
 	}
@@ -85,8 +85,11 @@ public class PawnController : MonoBehaviour {
 						// Collision
 						
 						// Move back
-						Vector3 dir = (p.rootTransform.position - tp.rootTransform.position).normalized;
-						p.rootTransform.Translate( dir * 2.0f * Time.deltaTime );
+						if( p.pawnState != Pawn.PawnState.idle)
+						{
+							Vector3 dir = (p.rootTransform.position - tp.rootTransform.position).normalized;
+							p.rootTransform.Translate( dir * 2.0f * Time.deltaTime );
+						}
 					}
 				}
 				
@@ -227,18 +230,16 @@ public class PawnController : MonoBehaviour {
 		return false;
 	}
 	
-	public void SetWayPoint( Vector3 newPos )
+	public void SetWayPoint( Vector3 newPos, int ownership )
 	{
 		foreach(GameObject pawn in pawnObjList)
 		{
 			Pawn p = pawn.GetComponent<Pawn>();
 			
-			if(p.ownership == 1) // TODO: Replace this with a check with current Player Only
+			if(p.ownership == ownership)
 			{
-				Debug.Log("INSIDE SET WAYPOINT");
 				p.wayPoint = newPos;
 			}
-			//UpdatePawnBehavior( pawn );
 		}
 	}
 }
