@@ -21,7 +21,8 @@ public class Pawn : MonoBehaviour {
 	public PawnState pawnState = PawnState.idle;
 	private bool bApproachMarker = false;
 	private float behaviorTimer = 0.0f;
-	public Vector3 idolPos = Vector3.zero; 
+	public Vector3 idolPos = Vector3.zero;
+	public bool bKilled = false;
 
 	// Use this for initialization
 	void Start () {
@@ -105,7 +106,7 @@ public class Pawn : MonoBehaviour {
 		rootTransform.Translate(dir);
 	}
 	
-	void TakeDamage( float dmgValue )
+	public void TakeDamage( float dmgValue )
 	{
 		if( health > 0.0f)
 		{
@@ -119,12 +120,12 @@ public class Pawn : MonoBehaviour {
 		}
 	}
 	
-	void KillPawn()
+	public void KillPawn()
 	{
 		// Clear Stats
-		ownership = -1;
+		//ownership = -1;
 		// Hide
-		
+		bKilled = true;
 		// Report Death
 		
 		// Spawn Corpse
