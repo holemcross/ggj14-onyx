@@ -24,10 +24,10 @@ public class PlayerInput : MonoBehaviour {
 	void HandleScreenClick( Camera cam )
 	{
 		Debug.Log("In HandleScreenClick Update");
-		float dist = 200.0f;
+		float dist = 5000.0f;
 		// Get Point Click
 		
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if(Physics.Raycast (ray, out hit, dist))
 		{
