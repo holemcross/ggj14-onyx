@@ -15,7 +15,7 @@ public class Pawn : MonoBehaviour {
 		attack,
 		flee
 	}
-	private float speed = 2.0f;
+	private float speed = 120.0f;
 	public int ownership = 0;
 	private float health = 1.0f;
 	public PawnState pawnState = PawnState.idle;
@@ -66,7 +66,9 @@ public class Pawn : MonoBehaviour {
 		// Move towards Goal
 		// Get Dir
 		
-		Vector3 dir = (wayPoint - rootTransform.position);
+		Vector3 wpt = new Vector3(wayPoint.x,0,0);
+		Vector3 org = new Vector3(rootTransform.position.x,0,0);
+		Vector3 dir = ( wpt - org);
 		dir.Normalize();
 		
 		//rootTransform.position = (rootTransform.position + dir * speed) * Time.deltaTime;
