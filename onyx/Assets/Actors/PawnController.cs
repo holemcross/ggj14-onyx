@@ -17,9 +17,9 @@ public class PawnController : MonoBehaviour {
 		
 		for(int i=0; i<5;i++)
 		{
-			GameObject myPawn = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
+			GameObject myPawn = (GameObject)Instantiate(Resources.Load("NPC_Pawn", typeof(GameObject)));
 			
-			myPawn.GetComponent<Pawn>().setPawn(new Vector3(150.0f *i, -340f,-30.0f + i * -10.0f), 1);
+			myPawn.GetComponent<Pawn>().setPawn(new Vector3(3 *i,0,0), 1);
 			pawnObjList.Add(myPawn);
 		}
 	}
@@ -43,7 +43,7 @@ public class PawnController : MonoBehaviour {
 		// Coward
 		if( CalcCoward( targetPawn ) )
 		{
-			//Debug.Log("CalcCoward Triggered");
+			Debug.Log("CalcCoward Triggered");
 			pawn.pawnState = Pawn.PawnState.flee;
 		}
 		else if(CalcBrave( targetPawn ))
@@ -54,12 +54,12 @@ public class PawnController : MonoBehaviour {
 		// if goal set
 		else if( CalcWayPoint( targetPawn ) )
 		{
-			//Debug.Log("CalcWayPoint Triggered");
+			Debug.Log("CalcWayPoint Triggered");
 			pawn.pawnState = Pawn.PawnState.march;
 		}
 		else
 		{
-			//Debug.Log("CalcIdle Triggered");
+			Debug.Log("CalcIdle Triggered");
 			pawn.pawnState = Pawn.PawnState.idle;
 		}
 	}
@@ -78,7 +78,7 @@ public class PawnController : MonoBehaviour {
 			if( tPawn != pawn)
 			{
 				Pawn tp = tPawn.GetComponent<Pawn>();
-				if( (tp.rootTransform.position - p.rootTransform.position).magnitude < 50.0f) // TODO: Remove hardcoded value
+				if( (tp.rootTransform.position - p.rootTransform.position).magnitude < 10.0f) // TODO: Remove hardcoded value
 				{
 					if(p.collider.bounds.Intersects( tp.collider.bounds))
 					{
@@ -87,10 +87,8 @@ public class PawnController : MonoBehaviour {
 						// Move back
 						if( p.pawnState != Pawn.PawnState.idle)
 						{
-							Vector3 pPos = new Vector3(p.rootTransform.position.x,0,0);
-							Vector3 tpPos = new Vector3(tp.rootTransform.position.x,0,0);
-							Vector3 dir = (pPos - tpPos).normalized;
-							p.rootTransform.Translate( dir * 150.0f * Time.deltaTime );
+							Vector3 dir = (p.rootTransform.position - tp.rootTransform.position).normalized;
+							p.rootTransform.Translate( dir * 2.0f * Time.deltaTime );
 						}
 					}
 				}
@@ -121,7 +119,7 @@ public class PawnController : MonoBehaviour {
 	// Calc Coward
 	bool CalcCoward( GameObject targetPawn)
 	{
-		float threatRange = 300.0f;
+		float threatRange = 15.0f;
 		int threshold = 3;
 		// Check for enemy pawns nearby
 		Vector3 origin = targetPawn.GetComponent<Pawn>().rootTransform.position;
@@ -169,7 +167,7 @@ public class PawnController : MonoBehaviour {
 	bool CalcBrave( GameObject targetPawn )
 	{
 		int threshold = 4;
-		float threatRange = 300.0f;
+		float threatRange = 15.0f;
 		
 		Vector3 origin = targetPawn.GetComponent<Pawn>().rootTransform.position;
 		int targetOwner = targetPawn.GetComponent<Pawn>().ownership;
@@ -213,7 +211,7 @@ public class PawnController : MonoBehaviour {
 	// Calc WayPoint
 	bool CalcWayPoint( GameObject targetPawn )
 	{
-		float range = 800.0f;
+		float range = 20.0f;
 		
 		foreach(GameObject pawn in pawnObjList )
 		{

@@ -6,10 +6,10 @@ public class PlayerCamera : MonoBehaviour {
     private float currentX = 0;
     public float desiredX = 0;
 
-    private float maxCameraSpeed = 900f;
+    private float maxCameraSpeed = 50f;
     private float maxCameraDistCap = 10f;
 
-    private float panSpeed = 900f;
+    private float panSpeed = 50f;
 
     public CameraFollowable lockingTo;
     private bool snapToLock = false;
