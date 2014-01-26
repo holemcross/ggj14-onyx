@@ -17,11 +17,21 @@ public class HudController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		int pop_our = resource.pop_p1;
+		int pop_them = resource.pop_p2;
+		int mana = resource.p1_mana;
+		
+		if(Network.isClient) {
+			pop_our = resource.pop_p2;
+			pop_them = resource.pop_p1;
+			mana = resource.p2_mana;
+		}
 
         if (text_population_all) text_population_all.text = "Global Population: " + resource.pop_all;
-        if (text_population_us) text_population_us.text = "Our Follower: " + resource.pop_p1;
-        if (text_population_them) text_population_us.text = "Enemy Follower: " + resource.pop_p2;
-        if (text_mana) text_mana.text = "Our Holy Power: " + resource.p1_mana;
+        if (text_population_us) text_population_us.text = "Our Follower: " + pop_our;
+        if (text_population_them) text_population_us.text = "Enemy Follower: " + pop_them;
+        if (text_mana) text_mana.text = "Our Holy Power: " + mana + " - " + resource.p1_mana;
 
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using SimpleJSON;
+
 public class NetworkInitiator : MonoBehaviour {
 	
 	public UILabel StartStopServerLabel;
@@ -28,6 +30,18 @@ public class NetworkInitiator : MonoBehaviour {
 		lanbs = transform.GetComponent<LANBroadcastService>();
 		state = MState.IDLE;
 		quickip = "";
+		
+		
+		// test json
+		/* JSONData a1 = new JSONData("haha");
+		JSONData a2 = new JSONData(2);
+		JSONClass cl = new JSONClass();
+		cl.Add("a1",a1);
+		cl.Add ("a2",a2);
+		string jsonstr = cl.SaveToBase64();
+		Debug.Log (jsonstr);
+		Debug.Log (JSONNode.LoadFromBase64(jsonstr)); */
+		
 	}
 	
 	// Update is called once per frame
@@ -96,12 +110,14 @@ public class NetworkInitiator : MonoBehaviour {
 		Debug.Log("Player connected from " + player.ipAddress + ":" + player.port);
 		StatusLabel.text = "Client connected";
 		state = MState.STARTING;
+		Application.LoadLevel("Scene_TestCameraHUD");
 	}
 	
 	void OnConnectedToServer() {
 		// Connected
 		StatusLabel.text = "Connected";
 		state = MState.STARTING;
+		Application.LoadLevel("Scene_TestCameraHUD");
 	}
 	
 	void OnFailedToConnect(NetworkConnectionError error) {
