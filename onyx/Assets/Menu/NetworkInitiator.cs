@@ -63,9 +63,7 @@ public class NetworkInitiator : MonoBehaviour {
 			}
 			else
 			{
-				// Connected
-				StatusLabel.text = "Connected";
-				state = MState.STARTING;
+				// nothing goes wrong so far, waiting
 			}
 		}
 		catch(System.Exception e)// NetworkConnectionError
@@ -97,6 +95,12 @@ public class NetworkInitiator : MonoBehaviour {
 	void OnPlayerConnected(NetworkPlayer player) {
 		Debug.Log("Player connected from " + player.ipAddress + ":" + player.port);
 		StatusLabel.text = "Client connected";
+		state = MState.STARTING;
+	}
+	
+	void OnConnectedToServer() {
+		// Connected
+		StatusLabel.text = "Connected";
 		state = MState.STARTING;
 	}
 	
