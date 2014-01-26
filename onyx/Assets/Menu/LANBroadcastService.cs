@@ -1,4 +1,7 @@
-﻿// LAN UDP-Broadcast Service Script
+﻿
+// http://forum.unity3d.com/threads/34353-Working-script-for-UDP-Broadcast-over-LAN-(to-find-servers)
+
+// LAN UDP-Broadcast Service Script
 // 12-11-2009
 // Made by Jordin Kee aka Jordos
 // You may use and/or modify this script as you like. Crediting is welcome, but not required.
