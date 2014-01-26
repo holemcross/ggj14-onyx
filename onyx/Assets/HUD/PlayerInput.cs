@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour {
 	
 	public Camera mainCamera;
 	public PawnController pawnController;
+	public FireBallController fireBallController;
 	public int ownership = 0;
 	
 	private PhotonView pview;
@@ -25,6 +26,10 @@ public class PlayerInput : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0))
 		{
 			HandleScreenClick(mainCamera);
+		}
+		else if (Input.GetMouseButtonDown(1))
+		{
+			HandleScreenClickRight(mainCamera);
 		}
 	}
 	
@@ -56,12 +61,29 @@ public class PlayerInput : MonoBehaviour {
 			JSONData px = new JSONData(hit.point.x);
 			cl.Add("pointx",px);
 			string data = cl.SaveToCompressedBase64();
-			pview.RPC("GameResources_DoSyncGet",PhotonTargets.Others,data);
+			pview.RPC("PlayerInput_RemoteHandleScreenClick",PhotonTargets.Others,data);
 		}
 	}
 	
 	void HandleScreenClickMerge(float pointx, int owner) {
 		pawnController.SetWayPoint(new Vector3(pointx,0,0), owner);
+	}
+	
+	void HandleScreenClickRight( Camera cam )
+	{
+		Debug.Log("In HandleScreenClick Update");
+		float dist = 5000.0f;
+		// Get Point Click
+		
+		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast (ray, out hit, dist))
+		{
+			Debug.DrawLine(ray.origin, hit.point);
+		}
+		
+		Debug.Log(hit.point);
+		fireBallController.genFireball( new Vector3(hit.point.x, -900, -30));
 	}
 	
 	void setOwner( int ownerValue)

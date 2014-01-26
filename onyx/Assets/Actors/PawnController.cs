@@ -20,21 +20,117 @@ public class PawnController : MonoBehaviour {
 		
 		// Debug\
 		Debug.Log("PawnController Init");
-		// Gen 5 Pawns
+		GameObject myPawn;
+		
 		pawnObjList = new List<GameObject>();
 		
-		for(int i=0; i<5;i++)
-		{
-			
-			//GameObject myPawn = PhotonNetwork.Instantiate(Resources.Load ("Weeble_Neutral"));
-			GameObject myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
-			
-			//myPawn.name = "Pawn-"+i;
-			//GameObject myPawn = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
-			
-			myPawn.GetComponent<Pawn>().setPawn(new Vector3(150.0f *i, -340f,-30.0f + i * -10.0f), 1);
-			pawnObjList.Add(myPawn);
-		}
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-4790.491f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-4695.656f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-4487.628f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-4215.352f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-3651.837f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-1868.871f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-1709.827f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-1544.65f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-1403.988f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-836.361f , -400f,-30.0f +  -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-532.7227f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-199.298f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(84.58902f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(520.3267f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(708.3323f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1005.448f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1229.839f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1500.483f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1682.016f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1500.483f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(1919.638f , -400f,-30.0f +  -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(2411.318f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(3097.799f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(3355.161f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(3823.741f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(4292.422f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
+		
+		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		myPawn.GetComponent<Pawn>().setPawn(new Vector3(4566.352f , -400f,-30.0f + -10.0f), 0);
+		pawnObjList.Add(myPawn);
 		
 		pview.RPC("PawnController_MakePawnList",PhotonTargets.Others);
 		
@@ -61,7 +157,7 @@ public class PawnController : MonoBehaviour {
 			DoMovement( pawn );
 			if(pawn.GetComponent<Pawn>().bKilled)
 			{
-				pawn = null;
+				pawnObjList.Remove(pawn);
 			}
 		}
 		

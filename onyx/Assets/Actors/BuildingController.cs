@@ -9,6 +9,10 @@ public class BuildingController : MonoBehaviour {
 	void Start () {
 		buildingObjList = GameObject.FindGameObjectsWithTag("Building");
 		Debug.Log("BuildingCOntroller" + buildingObjList.Length);
+		for(int i=0;i<buildingObjList.Length;i++) {
+			buildingObjList[i].AddComponent("Building");
+			buildingObjList[i].GetComponent<Building>().rootTransform = buildingObjList[i].transform;
+		}
 	}
 	
 	// Update is called once per frame
