@@ -47,7 +47,7 @@ public class Pawn : MonoBehaviour {
 		//rootTransform.Translate( dir * Time.deltaTime );
 		
 		// Do Movement
-		DoMovement();
+		//DoMovement();
 		
 		
 	}
@@ -63,6 +63,9 @@ public class Pawn : MonoBehaviour {
 	
 	void DoMovement()
 	{
+		
+		// Save old Pos
+		Vector3 prevPos = this.rootTransform.position;
 		
 		switch(pawnState)
 		{
@@ -83,12 +86,15 @@ public class Pawn : MonoBehaviour {
 		// Check collision and push back
 		
 	}
-	void IdleMovement()
+	
+	
+	
+	public void IdleMovement()
 	{
 		
 	}
 	
-	void MoveTowardsWayPoint()
+	public void MoveTowardsWayPoint()
 	{
 		
 		// Check for collisions
@@ -105,7 +111,7 @@ public class Pawn : MonoBehaviour {
 		rootTransform.Translate(dir * speed * Time.deltaTime);
 	}
 	
-	void FleeMovement()
+	public void FleeMovement()
 	{
 		// Hack - Assume fleeing to own's side
 		Vector3 dir;
@@ -120,7 +126,7 @@ public class Pawn : MonoBehaviour {
 		rootTransform.Translate(dir);
 	}
 	
-	void AttackMovement()
+	public void AttackMovement()
 	{
 		// Hack - Assume attacking towards enemy's side
 		Vector3 dir;

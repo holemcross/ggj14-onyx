@@ -19,14 +19,7 @@ public class PawnController : MonoBehaviour {
 		{
 			GameObject myPawn = (GameObject)Instantiate(Resources.Load("NPC_Pawn", typeof(GameObject)));
 			
-			if(i==3)// Debug
-			{
-				myPawn.GetComponent<Pawn>().setPawn(new Vector3(1 *i,0,0), 1);
-			}
-			else
-			{
-				myPawn.GetComponent<Pawn>().setPawn(new Vector3(1 *i,0,0), 2);
-			}
+			myPawn.GetComponent<Pawn>().setPawn(new Vector3(1 *i,0,0), 1);
 			pawnObjList.Add(myPawn);
 		}
 	}
@@ -37,6 +30,7 @@ public class PawnController : MonoBehaviour {
 		foreach(GameObject pawn in pawnObjList)
 		{
 			UpdatePawnBehavior( pawn );
+			DoMovement( pawn );
 		}
 		
 	
@@ -70,6 +64,54 @@ public class PawnController : MonoBehaviour {
 		}
 	}
 	
+	void DoMovement( GameObject pawn )
+	{
+		Pawn p = pawn.GetComponent<Pawn>();
+		
+		// Save old Pos
+		Vector3 prevPos = p.rootTransform.position;
+		
+		
+		// Check collision and push back
+		foreach(GameObject tPawn in pawnObjList )
+		{
+			if( tPawn != pawn)
+			{
+				Pawn tp = tPawn.GetComponent<Pawn>();
+				if( (tp.rootTransform.position - p.rootTransform.position).magnitude < 10.0f) // TODO: Remove hardcoded value
+				{
+					if(p.collider.bounds.Intersects( tp.collider.bounds))
+					{
+						// Collision
+						
+						// Move back
+						Vector3 dir = (p.rootTransform.position - tp.rootTransform.position).normalized;
+						p.rootTransform.Translate( dir * 2.0f * Time.deltaTime );
+					}
+				}
+				
+			}
+		}
+		
+		switch(p.pawnState)
+		{
+		case Pawn.PawnState.idle:
+			p.IdleMovement();
+			break;
+		case Pawn.PawnState.march:
+			p.MoveTowardsWayPoint();
+			break;
+		case Pawn.PawnState.flee:
+			p.FleeMovement();
+			break;
+		case Pawn.PawnState.attack:
+			p.AttackMovement();
+			break;	
+		}
+		
+		
+	}
+	
 	// Calculate Pawn Behavior
 	// Calc Coward
 	bool CalcCoward( GameObject targetPawn)
@@ -88,11 +130,11 @@ public class PawnController : MonoBehaviour {
 			{
 				Vector3 tempPos = pawn.GetComponent<Pawn>().rootTransform.position;
 				int tempOwner = pawn.GetComponent<Pawn>().ownership;
-				Debug.Log("TempPos: " + tempPos.ToString());
-				Debug.Log("TempOwner: " + tempOwner);
+				//Debug.Log("TempPos: " + tempPos.ToString());
+				//Debug.Log("TempOwner: " + tempOwner);
 				if(tempOwner != 0)
 				{
-					Debug.Log("Magnitude: " +(origin - tempPos).magnitude);
+					//Debug.Log("Magnitude: " +(origin - tempPos).magnitude);
 					if( (origin - tempPos).magnitude < threatRange )
 					{
 						
@@ -166,7 +208,37 @@ public class PawnController : MonoBehaviour {
 	// Calc WayPoint
 	bool CalcWayPoint( GameObject targetPawn )
 	{
+		float range = 20.0f;
+		
+		foreach(GameObject pawn in pawnObjList )
+		{
+			if(targetPawn != pawn)
+			{
+				Vector3 tempPos = pawn.GetComponent<Pawn>().rootTransform.position;
+				Vector3 tempWaypt = pawn.GetComponent<Pawn>().wayPoint;
+				
+				if( (tempWaypt - tempPos).magnitude < range )
+				{
+					return true;
+				}
+			}
+		}
+			
 		return false;
 	}
 	
+	public void SetWayPoint( Vector3 newPos )
+	{
+		foreach(GameObject pawn in pawnObjList)
+		{
+			Pawn p = pawn.GetComponent<Pawn>();
+			
+			if(p.ownership == 1) // TODO: Replace this with a check with current Player Only
+			{
+				Debug.Log("INSIDE SET WAYPOINT");
+				p.wayPoint = newPos;
+			}
+			//UpdatePawnBehavior( pawn );
+		}
+	}
 }
