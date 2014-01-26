@@ -78,13 +78,13 @@ public class GameResources : MonoBehaviour {
 		
 		pview.RPC("GameResources_DoSyncGet",PhotonTargets.Others,data);
         //nview.RPC("GameResources_DoSyncGet", RPCMode.Others, data);
-		Debug.Log ("sending data to client");
+		//Debug.Log ("sending data to client");
     }
 
     [RPC]
     void GameResources_DoSyncGet(string data)
     {
-		Debug.Log ("recieved data from server");
+		//Debug.Log ("recieved data from server");
 		JSONClass cl = (JSONClass) JSONNode.LoadFromBase64(data);
 		p1_mana = cl["p1_mana"].AsInt;
 		p2_mana = cl["p2_mana"].AsInt;
