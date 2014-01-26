@@ -24,7 +24,7 @@ public class FireBall : MonoBehaviour {
 	{
 		rootTransform.Translate( Vector3.down * 0.9f);
 		
-		if( rootTransform.position.y < - 270f && !bExploded )
+		if( rootTransform.position.y < - 800f && !bExploded )
 		{
 			Vector3 missilePos = rootTransform.position;
 			// Explode

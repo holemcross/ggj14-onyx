@@ -56,7 +56,7 @@ public class Building : MonoBehaviour {
 		// Get Right Icon
 		if (icon == null)
 		{
-			icon = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
+			icon = (GameObject)Instantiate(Resources.Load("UpgradeSprite", typeof(GameObject)));
 			icon.transform.position = new Vector3(rootTransform.position.x,rootTransform.position.y + ICON_HEIGHT,rootTransform.position.z);
 		}
 	}
@@ -90,7 +90,7 @@ public class Building : MonoBehaviour {
 	public void Upgrade( int newOwnership)
 	{
 		// TODO: Deplete Resources
-		Debug.Log("In UPGRADE!");
+		//Debug.Log("In UPGRADE!");
 		ownership = newOwnership;
 		buildingLevel++;
 		if( ownership == 1)

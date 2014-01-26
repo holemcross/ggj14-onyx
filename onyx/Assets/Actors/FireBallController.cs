@@ -4,27 +4,33 @@ using System.Collections.Generic;
 
 public class FireBallController : MonoBehaviour {
 	
+	public PawnController pawnController;
+	public BuildingController buildingController;
+	
 	public List<GameObject> fireBallObjList; 
 	
 	// Use this for initialization
 	void Start () {
-	
+		fireBallObjList = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		for(int i=0; i< fireBallObjList.FindLastIndex+1;i++)
+		foreach(GameObject fireBall in fireBallObjList)
 		{
-			if(fireBallObjList[i].GetComponent<FireBall>().bExploded)
+			if(fireBall.GetComponent<FireBall>().bExploded)
 			{
-				fireBall = null; // Delete
+				GameObject tempFB = fireBall;
+				//tempFB = null;
 			}
 		}
 	}
 	
 	public void genFireball( Vector3 position)
 	{
-		GameObject fireBall = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
-		fireBallObjList.Add(fireball);
+		GameObject fireBall = (GameObject)Instantiate(Resources.Load("FireBallSprite", typeof(GameObject)));
+		fireBall.GetComponent<FireBall>().pawnController = pawnController;
+		fireBall.GetComponent<FireBall>().buildingController = buildingController;
+		fireBallObjList.Add(fireBall);
 	}
 }
