@@ -123,7 +123,7 @@ public class NetworkInitiator : MonoBehaviour {
 		if(PhotonNetwork.isMasterClient) {
 			StatusLabel.text = "Client connected";
 			state = MState.STARTING;
-			Application.LoadLevel("Scene_TestCameraHUD");
+			Application.LoadLevel("Scene_GameTest");
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class NetworkInitiator : MonoBehaviour {
 			// we are the client
 			StatusLabel.text = "Connected";
 			state = MState.STARTING;
-			Application.LoadLevel("Scene_TestCameraHUD");
+			Application.LoadLevel("Scene_GameTest");
 		}
 	}
 	

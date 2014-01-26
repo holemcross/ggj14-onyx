@@ -8,11 +8,16 @@ public class PlayerInput : MonoBehaviour {
 	public PawnController pawnController;
 	public int ownership = 0;
 	
+	private PhotonView pview;
+	
 	// Use this for initialization
 	void Start () {
 		// DEBUG
 		if(PhotonNetwork.isMasterClient) setOwner(1);
 		else setOwner(2);
+		
+		pview = gameObject.GetComponent<PhotonView>();
+		
 	}
 
 	// Update is called once per frame
@@ -24,9 +29,9 @@ public class PlayerInput : MonoBehaviour {
 	}
 	
 	[RPC]
-	void PlayerInput_RemoteHandleScreenClick(Vector3 point,int ownership) {
+	void PlayerInput_RemoteHandleScreenClick(string data) {
 		JSONClass cl = (JSONClass) JSONNode.LoadFromBase64(data);
-		int nx = cl["pointx"].AsFloat;
+		float nx = cl["pointx"].AsFloat;
 		HandleScreenClickMerge(nx,ownership);
 	}
 	

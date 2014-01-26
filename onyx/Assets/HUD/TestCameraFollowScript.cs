@@ -23,7 +23,7 @@ public class TestCameraFollowScript : Photon.MonoBehaviour {
 			float lerper = lerptime/deltaTime;
 			if(lerper>1) lerper = 1;
 			transform.position = Vector3.Lerp(lastPos,curPos,lerper);
-			transform.position += velocity * Time.fixedDeltaTime;
+			//transform.position += velocity * Time.fixedDeltaTime;
 		} else {
 			transform.position = new Vector3(Mathf.Sin(Time.fixedTime / 10f * Mathf.PI)*20f, transform.position.y, transform.position.z);   //10s cycle
 		}
