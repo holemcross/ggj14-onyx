@@ -21,7 +21,14 @@ public class Pawn : MonoBehaviour {
 	public PawnState pawnState = PawnState.idle;
 	private bool bApproachMarker = false;
 	private float behaviorTimer = 0.0f;
-	public Vector3 idolPos = Vector3.zero;
+	public Vector3 idolPos = Vector3.zero; 
+	
+	private Vector3 lastPos;
+	private Vector3 curPos;
+	private float lerpTime;
+	private float lastTime;
+	private float diffTime;
+	
 	public bool bKilled = false;
 
 	// Use this for initialization
@@ -37,11 +44,29 @@ public class Pawn : MonoBehaviour {
 		idolPos = newPos;
 		ownership = newOwner;
 		pawnState = PawnState.idle;
+		lastPos = this.transform.position;
+		lastTime = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(!PhotonNetwork.isMasterClient) {
+			// walk based on position lerping
+			lerpTime += Time.fixedDeltaTime;
+			float lerper = lerpTime/diffTime;
+			if(lerper>1) lerper = 1;
+			transform.position = Vector3.Lerp(lastPos,curPos,lerper);
+			//transform.position += velocity * Time.fixedDeltaTime;
+		}
+	}
+	
+	public void RelayedPosition(float newx) {
+		Vector3 newPos = new Vector3(newx,transform.position.y,transform.position.z);
+		lastPos = transform.position;
+		curPos = newPos;
+		lerpTime = 0;
+		diffTime = Time.fixedTime - lastTime;
+		lastTime = Time.fixedTime;
 	}
 	
 	Vector3 _wayPoint;

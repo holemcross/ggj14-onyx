@@ -1,4 +1,4 @@
-﻿//#define USE_SharpZipLib
+﻿#define USE_SharpZipLib
 #if !UNITY_WEBPLAYER
 #define USE_FileIO
 #endif
@@ -46,7 +46,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
- 
+using ICSharpCode;
  
 namespace SimpleJSON
 {

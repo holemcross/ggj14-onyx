@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using SimpleJSON;
 
 public class PawnController : MonoBehaviour {
 	
 	public List<GameObject> pawnObjList;
 	
+	private PhotonView pview;
+	private float syncTimer = 0f;
+    private float syncCycle = 0.03f;
 
 	// Use this for initialization
 	void Start () {
+		
+		pview = gameObject.GetComponent<PhotonView>();
+		
+		if(!PhotonNetwork.isMasterClient) return;	// reserved for server
+		
 		// Debug\
 		Debug.Log("PawnController Init");
 		// Gen 5 Pawns
@@ -17,15 +25,35 @@ public class PawnController : MonoBehaviour {
 		
 		for(int i=0; i<5;i++)
 		{
-			GameObject myPawn = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
+			
+			//GameObject myPawn = PhotonNetwork.Instantiate(Resources.Load ("Weeble_Neutral"));
+			GameObject myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+			
+			//myPawn.name = "Pawn-"+i;
+			//GameObject myPawn = (GameObject)Instantiate(Resources.Load("Weeble_Neutral", typeof(GameObject)));
 			
 			myPawn.GetComponent<Pawn>().setPawn(new Vector3(150.0f *i, -340f,-30.0f + i * -10.0f), 1);
 			pawnObjList.Add(myPawn);
+		}
+		
+		pview.RPC("PawnController_MakePawnList",PhotonTargets.Others);
+		
+	}
+	
+	[RPC]
+	void PawnController_MakePawnList() {
+		pawnObjList = new List<GameObject>();
+		Pawn[] pobjs = GameObject.FindObjectsOfType(typeof(Pawn)) as Pawn[];
+		for(int i=0;i<pobjs.Length;i++) {
+			Pawn p = pobjs[i];
+			pawnObjList.Add(p.gameObject);
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
+		if(!PhotonNetwork.isMasterClient) return;	// reserved for server
 		
 		foreach(GameObject pawn in pawnObjList)
 		{
@@ -37,7 +65,42 @@ public class PawnController : MonoBehaviour {
 			}
 		}
 		
+		// send position to client
+		syncTimer += Time.fixedDeltaTime;
+        if (syncTimer >= syncCycle)
+        {
+            syncTimer -= syncCycle;
+            DoSyncPawnPosition();
+        }
+		
+		
+	}
 	
+	void DoSyncPawnPosition() {
+		JSONClass cl = new JSONClass();
+		JSONArray arr = new JSONArray();
+		foreach(GameObject tPawn in pawnObjList )
+		{
+			JSONClass cls = new JSONClass();
+			cls.Add("pointx",new JSONData(tPawn.transform.position.x));
+			arr.Add(cls);
+		}
+		cl.Add("pawnsdata",arr);
+		string data = cl.SaveToCompressedBase64();
+		
+		pview.RPC("PawnController_UpdatePosition",PhotonTargets.Others,data);
+	}
+	
+	[RPC]
+	void PawnController_UpdatePosition(string data) {
+		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
+		int i=0;
+		foreach(GameObject tPawn in pawnObjList )
+		{
+			float px = cl["pawnsdata"][i]["pointx"].AsFloat;
+			tPawn.GetComponent<Pawn>().RelayedPosition(px);
+			i++;
+		}
 	}
 	
 	void UpdatePawnBehavior( GameObject targetPawn )
