@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour {
 	
 	[RPC]
 	void PlayerInput_RemoteHandleScreenClick(string data) {
-		JSONClass cl = (JSONClass) JSONNode.LoadFromBase64(data);
+		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
 		float nx = cl["pointx"].AsFloat;
 		HandleScreenClickMerge(nx,ownership);
 	}
@@ -55,7 +55,7 @@ public class PlayerInput : MonoBehaviour {
 			JSONClass cl = new JSONClass();
 			JSONData px = new JSONData(hit.point.x);
 			cl.Add("pointx",px);
-			string data = cl.SaveToBase64();
+			string data = cl.SaveToCompressedBase64();
 			pview.RPC("GameResources_DoSyncGet",PhotonTargets.Others,data);
 		}
 	}

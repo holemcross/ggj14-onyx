@@ -9,7 +9,7 @@ public class PawnController : MonoBehaviour {
 	
 	private PhotonView pview;
 	private float syncTimer = 0f;
-    private float syncCycle = 0.033f;
+    private float syncCycle = 0.03f;
 
 	// Use this for initialization
 	void Start () {
@@ -82,14 +82,14 @@ public class PawnController : MonoBehaviour {
 			arr.Add(cls);
 		}
 		cl.Add("pawnsdata",arr);
-		string data = cl.SaveToBase64();
+		string data = cl.SaveToCompressedBase64();
 		
 		pview.RPC("PawnController_UpdatePosition",PhotonTargets.Others,data);
 	}
 	
 	[RPC]
 	void PawnController_UpdatePosition(string data) {
-		JSONClass cl = (JSONClass) JSONNode.LoadFromBase64(data);
+		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
 		int i=0;
 		foreach(GameObject tPawn in pawnObjList )
 		{
