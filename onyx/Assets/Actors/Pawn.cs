@@ -26,7 +26,7 @@ public class Pawn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// DEBUG
-		//wayPoint = new Vector3(100.0f,0.0f,0.0f);
+		wayPoint = new Vector3(-10000.0f,0.0f,0.0f);
 		//pawnState = PawnState.march;
 	}
 	
@@ -35,24 +35,13 @@ public class Pawn : MonoBehaviour {
 		this.rootTransform.position = newPos;
 		idolPos = newPos;
 		ownership = newOwner;
+		pawnState = PawnState.idle;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		// Movement
-		//Vector3 curPos = rootTransform.position;
-		//Vector3 dir = new Vector3(1,0,0) * speed; // Move towards the right
-		//rootTransform.position = (dir - curPos) * Time.deltaTime;
-		//rootTransform.Translate( dir * Time.deltaTime );
-		
-		// Do Movement
-		DoMovement();
-		
 		
 	}
-	
-
 	
 	Vector3 _wayPoint;
 	public Vector3 wayPoint
@@ -61,34 +50,13 @@ public class Pawn : MonoBehaviour {
 		set{_wayPoint = value;}
 	}
 	
-	void DoMovement()
+	public void IdleMovement()
 	{
-		
-		switch(pawnState)
-		{
-		case PawnState.idle:
-			IdleMovement();
-			break;
-		case PawnState.march:
-			MoveTowardsWayPoint();
-			break;
-		case PawnState.flee:
-			FleeMovement();
-			break;
-		case PawnState.attack:
-			AttackMovement();
-			break;	
-		}
-		
-		// Check collision and push back
-		
-	}
-	void IdleMovement()
-	{
-		
+		// Going round and round baby.
+		//rootTransform.Translate( new Vector3( idolPos.x + Mathf.Cos(Time.time) * Time.deltaTime ,0.0f,0.0f) );
 	}
 	
-	void MoveTowardsWayPoint()
+	public void MoveTowardsWayPoint()
 	{
 		
 		// Check for collisions
@@ -105,7 +73,7 @@ public class Pawn : MonoBehaviour {
 		rootTransform.Translate(dir * speed * Time.deltaTime);
 	}
 	
-	void FleeMovement()
+	public void FleeMovement()
 	{
 		// Hack - Assume fleeing to own's side
 		Vector3 dir;
@@ -120,7 +88,7 @@ public class Pawn : MonoBehaviour {
 		rootTransform.Translate(dir);
 	}
 	
-	void AttackMovement()
+	public void AttackMovement()
 	{
 		// Hack - Assume attacking towards enemy's side
 		Vector3 dir;
