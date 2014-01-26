@@ -19,6 +19,12 @@ public class PlayerCamera : MonoBehaviour {
         lockingTo = null;
 	}
 	
+	void Update() {
+		// handling arrow key (many like to do this)
+		if(Input.GetKey(KeyCode.RightArrow)) PanRight();
+		else if(Input.GetKey(KeyCode.LeftArrow)) PanLeft();
+	}
+	
 	// Update is called once per frame
 	void LateUpdate () {
 
