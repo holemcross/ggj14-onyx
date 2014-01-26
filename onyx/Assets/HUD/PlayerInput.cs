@@ -33,13 +33,6 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 	
-	[RPC]
-	void PlayerInput_RemoteHandleScreenClick(string data) {
-		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
-		float nx = cl["pointx"].AsFloat;
-		HandleScreenClickMerge(nx,ownership);
-	}
-	
 	void HandleScreenClick( Camera cam )
 	{
 		Debug.Log("In HandleScreenClick Update");
@@ -60,9 +53,17 @@ public class PlayerInput : MonoBehaviour {
 			JSONClass cl = new JSONClass();
 			JSONData px = new JSONData(hit.point.x);
 			cl.Add("pointx",px);
+			cl.Add ("owner",new JSONData(ownership));
 			string data = cl.SaveToCompressedBase64();
 			pview.RPC("PlayerInput_RemoteHandleScreenClick",PhotonTargets.Others,data);
 		}
+	}
+	
+	[RPC]
+	void PlayerInput_RemoteHandleScreenClick(string data) {
+		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
+		float nx = cl["pointx"].AsFloat;
+		HandleScreenClickMerge(nx,cl["owner"].AsInt);
 	}
 	
 	void HandleScreenClickMerge(float pointx, int owner) {
@@ -83,7 +84,26 @@ public class PlayerInput : MonoBehaviour {
 		}
 		
 		Debug.Log(hit.point);
-		fireBallController.genFireball( new Vector3(hit.point.x, -900, -30));
+		
+		if(PhotonNetwork.isMasterClient) HandleScreenClickRightMerge(hit.point.x);
+		else {
+			JSONClass cl = new JSONClass();
+			JSONData px = new JSONData(hit.point.x);
+			cl.Add("pointx",px);
+			string data = cl.SaveToCompressedBase64();
+			pview.RPC("PlayerInput_RemoteHandleScreenClickRight",PhotonTargets.Others,data);
+		}
+	}
+	
+	[RPC]
+	void PlayerInput_RemoteHandleScreenClickRight(string data) {
+		JSONClass cl = (JSONClass) JSONNode.LoadFromCompressedBase64(data);
+		float nx = cl["pointx"].AsFloat;
+		HandleScreenClickRightMerge(nx);
+	}
+	
+	void HandleScreenClickRightMerge(float pointx) {
+		fireBallController.genFireball( new Vector3(pointx-300, 100, -30));
 	}
 	
 	void setOwner( int ownerValue)

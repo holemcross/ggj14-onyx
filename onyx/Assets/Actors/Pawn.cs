@@ -36,11 +36,13 @@ public class Pawn : MonoBehaviour {
 		// DEBUG
 		wayPoint = new Vector3(-10000.0f,0.0f,0.0f);
 		//pawnState = PawnState.march;
+		//this.transform.position = new Vector3(0,-400f,-100f);
 	}
 	
 	public void setPawn( Vector3 newPos, int newOwner)
 	{
-		this.rootTransform.position = newPos;
+		//this.rootTransform.position = newPos;
+		this.transform.position = newPos;
 		idolPos = newPos;
 		ownership = newOwner;
 		pawnState = PawnState.idle;

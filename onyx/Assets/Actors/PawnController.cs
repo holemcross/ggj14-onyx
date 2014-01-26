@@ -24,7 +24,7 @@ public class PawnController : MonoBehaviour {
 		
 		pawnObjList = new List<GameObject>();
 		
-		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
+		/* myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
 		myPawn.GetComponent<Pawn>().setPawn(new Vector3(-4790.491f , -400f,-30.0f + -10.0f), 0);
 		pawnObjList.Add(myPawn);
 		
@@ -131,6 +131,12 @@ public class PawnController : MonoBehaviour {
 		myPawn = PhotonNetwork.Instantiate("Weeble_Neutral",Vector3.zero,Quaternion.identity,0);
 		myPawn.GetComponent<Pawn>().setPawn(new Vector3(4566.352f , -400f,-30.0f + -10.0f), 0);
 		pawnObjList.Add(myPawn);
+		*/
+		
+		for(int i=0;i<30;i++) {
+			GameObject pawn = PhotonNetwork.Instantiate("Weeble_Neutral",new Vector3(Random.Range(-1000f,1000f),-400f,-40f),Quaternion.identity,0);
+			pawnObjList.Add(pawn);
+		}
 		
 		pview.RPC("PawnController_MakePawnList",PhotonTargets.Others);
 		
@@ -153,11 +159,20 @@ public class PawnController : MonoBehaviour {
 		
 		foreach(GameObject pawn in pawnObjList)
 		{
+			if(pawn==null) continue;
+			if(pawn.GetComponent<Pawn>().bKilled)
+			{
+				//pawnObjList.Remove(pawn);
+				PhotonNetwork.Destroy(pawn);
+			}
+			continue;
+			
 			UpdatePawnBehavior( pawn );
 			DoMovement( pawn );
 			if(pawn.GetComponent<Pawn>().bKilled)
 			{
-				pawnObjList.Remove(pawn);
+				//pawnObjList.Remove(pawn);
+				PhotonNetwork.Destroy(pawn);
 			}
 		}
 		
@@ -178,7 +193,10 @@ public class PawnController : MonoBehaviour {
 		foreach(GameObject tPawn in pawnObjList )
 		{
 			JSONClass cls = new JSONClass();
-			cls.Add("pointx",new JSONData(tPawn.transform.position.x));
+			if(tPawn!=null) {
+				cls.Add("pointx",new JSONData(tPawn.transform.position.x));
+				cls.Add ("bkilled",new JSONData(tPawn.GetComponent<Pawn>().bKilled));
+			}
 			arr.Add(cls);
 		}
 		cl.Add("pawnsdata",arr);
@@ -193,14 +211,19 @@ public class PawnController : MonoBehaviour {
 		int i=0;
 		foreach(GameObject tPawn in pawnObjList )
 		{
+			if(tPawn==null) continue;
 			float px = cl["pawnsdata"][i]["pointx"].AsFloat;
 			tPawn.GetComponent<Pawn>().RelayedPosition(px);
+			tPawn.GetComponent<Pawn>().bKilled = cl["pawnsdata"][i]["bkilled"].AsBool;
 			i++;
 		}
 	}
 	
 	void UpdatePawnBehavior( GameObject targetPawn )
 	{
+		
+		return;
+		
 		Pawn pawn = targetPawn.GetComponent<Pawn>();
 		
 		// Coward
@@ -238,6 +261,7 @@ public class PawnController : MonoBehaviour {
 		// Check collision and push back
 		foreach(GameObject tPawn in pawnObjList )
 		{
+			if(tPawn==null) return;
 			if( tPawn != pawn)
 			{
 				Pawn tp = tPawn.GetComponent<Pawn>();

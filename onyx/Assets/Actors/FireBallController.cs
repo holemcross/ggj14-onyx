@@ -16,21 +16,25 @@ public class FireBallController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		foreach(GameObject fireBall in fireBallObjList)
+		/* foreach(GameObject fireBall in fireBallObjList)
 		{
 			if(fireBall.GetComponent<FireBall>().bExploded)
 			{
 				GameObject tempFB = fireBall;
 				//tempFB = null;
 			}
-		}
+		} */
 	}
 	
 	public void genFireball( Vector3 position)
 	{
-		GameObject fireBall = (GameObject)Instantiate(Resources.Load("FireBallSprite", typeof(GameObject)));
+		GameObject fireBall = PhotonNetwork.Instantiate("FireBallSprite",position,Quaternion.identity,0);
+		//GameObject fireBall = (GameObject)Instantiate(Resources.Load("FireBallSprite", typeof(GameObject)));
 		fireBall.GetComponent<FireBall>().pawnController = pawnController;
 		fireBall.GetComponent<FireBall>().buildingController = buildingController;
+		//fireBall.GetComponent<PhotonView>().observed = fireBall.transform;
+		//fireBall.GetComponent<PhotonView>().synchronization = ViewSynchronization.ReliableDeltaCompressed;
+		//fireBall.transform.position = position;
 		fireBallObjList.Add(fireBall);
 	}
 }
