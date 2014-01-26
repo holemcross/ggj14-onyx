@@ -31,6 +31,10 @@ public class PawnController : MonoBehaviour {
 		{
 			UpdatePawnBehavior( pawn );
 			DoMovement( pawn );
+			if(pawn.GetComponent<Pawn>().bKilled)
+			{
+				pawn = null;
+			}
 		}
 		
 	
